@@ -10,12 +10,20 @@ This repository contains my personal QMK keyboard layout configurator JSON file 
 
 ## 🗺️ Layer Architecture
 
-The layout relies on the `DF()` (Default Layer) keycode to cleanly swap the keyboard foundation between Colemak-DH and QWERTY. Temporary overlays use `MO()` (momentary hold) and `TO()` (jump-to). Layer 3 is reached via the classic **tri-layer** pattern — holding both thumb layer keys at once.
+The layout uses `DF()` (Default Layer) to cleanly swap the keyboard foundation between Colemak-DH and QWERTY, with `MO()` (momentary hold) overlays for numbers, symbols, and RGB control.
+
+```
+Layer 0: Colemak Base
+Layer 1: QWERTY Alternate Base
+Layer 2: Numbers Layout
+Layer 3: Symbols Layout
+Layer 4: RGB Control & Bootloader Mode
+```
 
 ### Layer 0: Colemak-DH (ISO) — Base
 * **Type:** Permanent Base Floor (Default on boot)
 * **Purpose:** Primary layout for typing, programming, and writing.
-* **Thumbs (L → R):** `LGUI` · `MO(1)` · `Enter` ‖ `Space` · `MO(2)` · `RAlt`
+* **Thumbs (L → R):** `LGUI` · `MO(2)` · `Enter` ‖ `Space` · `MO(3)` · `RAlt`
 
 ```
 ┌─────┬─────┬─────┬─────┬─────┬─────┐   ┌─────┬─────┬─────┬─────┬─────┬─────┐
@@ -25,33 +33,40 @@ The layout relies on the `DF()` (Default Layer) keycode to cleanly swap the keyb
 ├─────┼─────┼─────┼─────┼─────┼─────┤   ├─────┼─────┼─────┼─────┼─────┼─────┤
 │Shift│  Z  │  X  │  C  │  D  │  V  │   │  K  │  H  │  ,  │  .  │  /  │ Esc │
 └─────┴─────┴─────┴─────┴─────┴─────┘   └─────┴─────┴─────┴─────┴─────┴─────┘
-              │ GUI │MO(1)│ Ent │       │ Spc │MO(2)│ Alt │
+              │ GUI │MO(2)│ Ent │       │ Spc │MO(3)│ Alt │
               └─────┴─────┴─────┘       └─────┴─────┴─────┘
 ```
 
-### Layer 1: Numbers, Arrows & Layer Jump Pad
-* **Type:** Temporary Overlay (held via `MO(1)` on the left thumb)
-* **Purpose:** Number row, arrow cluster, and the command center for jumping between layouts.
+### Layer 1: QWERTY (ISO) — Alternate Base
+* **Type:** Permanent Base Floor (alternate)
+* **Purpose:** For fast, panic typing when muscle memory fails (or when someone else needs to type).
+* **Activation:** From the Numbers or Symbols layer, tap the left-pinky bottom-row key — `DF(1)`.
+* **Exit:** From the Numbers or Symbols layer, tap the left-index bottom-row key — `DF(0)` — to fall back to Colemak-DH.
+* **Thumbs:** Same cluster as Layer 0 (`MO(2)` / `MO(3)`), so the Numbers and Symbols overlays open perfectly from QWERTY too.
+
+### Layer 2: Numbers & Arrows
+* **Type:** Temporary Overlay (held via `MO(2)` on the left thumb)
+* **Purpose:** Number row, arrow cluster, and the jump pad for swapping base layouts.
 * **Top Row:** `1 2 3 4 5` ‖ `6 7 8 9 0`
 * **Right Home Row (Arrows):** `←` `↓` `↑` `→`
 * **Left Bottom Row — Layer Jump Pad:**
-  * **Pinky:** `DF(4)` ➡️ Switch base floor to **QWERTY**
-  * **Ring:** `TO(3)` ➡️ Jump to **RGB / Adjust**
-  * **Middle:** `TO(1)` ➡️ Stay on **Numbers** (lock it on)
+  * **Pinky:** `DF(1)` ➡️ Switch base floor to **QWERTY**
+  * **Ring:** `MO(4)` ➡️ Momentary jump to **RGB / Bootloader**
   * **Index:** `DF(0)` ➡️ Switch base floor back to **Colemak-DH**
-* **Right Thumb:** `MO(3)` (combine with the held `MO(1)` to reach Layer 3)
+* **Right Thumb:** `MO(4)` (also reaches the RGB layer momentarily)
 
-### Layer 2: Symbols
-* **Type:** Temporary Overlay (held via `MO(2)` on the right thumb)
+### Layer 3: Symbols
+* **Type:** Temporary Overlay (held via `MO(3)` on the right thumb)
 * **Purpose:** Programming symbols, laid out so shifted-number symbols stay in their familiar columns.
 * **Top Row:** `! @ # $ %` ‖ `^ & * ( )`
 * **Right Home Row:** `- = [ ] \ \``
 * **Right Bottom Row:** `_ + { } | ~`
-* **Left Bottom Row:** also exposes `DF(4)` (pinky) and `DF(0)` (index) so you can swap base layouts from here too.
-* **Left Thumb:** `MO(3)` (combine with the held `MO(2)` to reach Layer 3)
+* **Left Bottom Row:** also exposes `DF(1)` (pinky) and `DF(0)` (index) so you can swap base layouts from here too.
+* **Left Thumb:** `MO(4)` (momentary jump to RGB)
 
-### Layer 3: RGB & Firmware Adjust
-* **Type:** Temporary Overlay — reached by holding **both** `MO(1)` + `MO(2)` (tri-layer), or via `TO(3)` from Layer 1.
+### Layer 4: RGB & Firmware Adjust
+* **Type:** Momentary Overlay — reached via `MO(4)` from Layer 2 (left-ring) or Layer 3 (left-thumb / right-thumb).
+* **Trap Fix:** The activation key is `KC_TRNS`, so releasing your thumb instantly drops you back to your base layout — no more getting stuck here.
 * **Purpose:** RGB matrix control and bootloader access. No typing happens here.
 * **Top-Left (Tab position):** `QK_BOOT` ➡️ jump into bootloader for flashing
 * **RGB Controls:**
@@ -60,13 +75,6 @@ The layout relies on the `DF()` (Default Layer) keycode to cleanly swap the keyb
   * `RM_SATU` — saturation up
   * `RM_VALU` / `RM_VALD` — brightness up/down
   * `RM_NEXT` — cycle to next effect
-
-### Layer 4: QWERTY (ISO) — Emergency Base
-* **Type:** Permanent Base Floor (alternate)
-* **Purpose:** For fast, panic typing when muscle memory fails (or when someone else needs to type).
-* **Activation:** Hold `MO(1)`, then tap pinky on the left bottom row — `DF(4)`.
-* **Exit:** Hold `MO(1)` again, then tap index on the left bottom row — `DF(0)` — to fall back to Colemak-DH.
-* Same thumb cluster as Layer 0 (`MO(1)` / `MO(2)`), so all overlays remain accessible.
 
 ---
 
@@ -77,6 +85,6 @@ The layout relies on the `DF()` (Default Layer) keycode to cleanly swap the keyb
 4. Make your tweaks, compile, and download the new `.hex`!
 
 ## ⚡ How to Flash
-1. Put the Corne into bootloader mode — easiest way is **Layer 1 → top-left key (`QK_BOOT`)** by holding `MO(1)` and tapping where `Tab` lives on the base layer... wait, that's actually on **Layer 3**: hold both thumb layer keys, then tap the top-left key.
+1. Put the Corne into bootloader mode — hold `MO(2)` (left thumb) to enter the Numbers layer, then hold `MO(4)` (left-ring bottom row) to reach Layer 4, then tap the top-left key (`QK_BOOT`).
 2. Use [QMK Toolbox](https://github.com/qmk/qmk_toolbox) (or `dfu-programmer` / `avrdude`) to flash `crkbd_rev1_colemak-dh-iso-qwerty4.hex`.
 3. Repeat for the other half of the split.
