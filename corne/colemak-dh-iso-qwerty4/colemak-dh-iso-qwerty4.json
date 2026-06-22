@@ -1,9 +1,9 @@
 {
-  "documentation": "\"This file is a QMK Configurator export. You can import this at <https://qmk.fm>. It can also be used directly with QMK's source code.\n\nTo setup your QMK environment check out the tutorial: <https://qmk.fm>\n\nYou can convert this file to a keymap.c using this command: `qmk json2c {keymap}`\n\nYou can compile this keymap using this command: `qmk compile {keymap}`\"\n",
-  "notes":   "notes": "Layer 0 = Colemak Base\nLayer 1 = QWERTY Alternative Base\nLayer 2 = Numbers Layer (Hold Lower Thumb)\nLayer 3 = Symbols Layer (Hold Raise Thumb)\nLayer 4 = RGB & System Tuning",
+  "documentation": "\"This file is a QMK Configurator export. You can import this at <https://config.qmk.fm>. It can also be used directly with QMK's source code.\n\nTo setup your QMK environment check out the tutorial: <https://qmk.fm>\n\nYou can convert this file to a keymap.c using this command: `qmk json2c {keymap}`\n\nYou can compile this keymap using this command: `qmk compile {keymap}`\"\n",
+  "notes": "Corne Fixed Layer Order: L0 Colemak, L1 QWERTY, L2 Numbers, L3 Symbols, L4 RGB Control",
   "version": 1,
   "keyboard": "crkbd/rev1",
-  "keymap": "colemak-dh-iso-qwerty4",
+  "keymap": "colemak-dh-iso-qwerty4-fixed",
   "layout": "LAYOUT_split_3x6_3",
   "layers": [
     [
@@ -39,3 +39,4 @@
   ],
   "author": ""
 }
+
